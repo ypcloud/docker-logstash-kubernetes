@@ -3,6 +3,28 @@
 Logstash container for pulling docker logs with kubernetes metadata support.
 Events can be pushed to Cloudwatch Logs.
 
+Logstash tails docker logs and extracts `pod`, `container_name`, `namespace`,
+etc. The way this works is very simple. Logstash looks at an event field which
+contains full path to kubelet created symlinks to docker container logs, and
+extracts useful information from a symlink name. No access to Kubernetes API
+is required.
+
+Events are then pushed to Cloudwatch logs. An example event in Cloudwatch Logs
+looks like below:
+
+```json
+{
+    "log": "10.10.112.0 - - [02/Oct/2015:15:20:38 +0000] \"GET /dataset HTTP/1.1\" 200 2 \"-\" \"axios/0.5.4\" 6\n",
+    "stream": "stdout",
+    "time": "2015-10-02T15:20:38.706043658Z",
+    "replication_controller": "data-example-api",
+    "pod": "data-example-api-p82sy",
+    "namespace": "hoapi-catalogue",
+    "container_name": "data-example-api",
+    "container_id": "df1874255f0c85d18747b5edfc8dc372dbebf725b9ccbfb37549f5f81bba8326"
+}
+```
+
 Other outputs can be added in the future.
 
 ## Requirements
