@@ -1,7 +1,8 @@
 # docker-logstash-kubernetes
 
 Logstash container for pulling docker logs with kubernetes metadata support.
-Events can be pushed to Cloudwatch Logs.
+Additionally logs are pulled from systemd journal too. Events can be pushed to
+Cloudwatch Logs.
 
 Logstash tails docker logs and extracts `pod`, `container_name`, `namespace`,
 etc. The way this works is very simple. Logstash looks at an event field which
@@ -34,10 +35,13 @@ symlinks to container logs from `/var/log/containers/` to
 `/var/lib/docker/containers/`. So for that you need to make sure that logstash
 has access to both directories.
 
+For logstash to be able to pull logs from journal, you need to make sure that
+logstash can read `/var/log/journal`.
+
 Also, logstash writes `sincedb` file to its home directory, which by default is
-`/var/lib/logstash`. If you don't want logstash to start reading docker logs
-from the beginning after a restart, make sure you mount `/var/lib/logstash`
-somewhere on the host.
+`/var/lib/logstash`. If you don't want logstash to start reading docker or
+journal logs from the beginning after a restart, make sure you mount
+`/var/lib/logstash` somewhere on the host.
 
 If you want to push events to Cloudwatch Logs, then you will have to set AWS
 access keys via environment variables.
@@ -58,7 +62,7 @@ As usual, configuration is passed through environment variables.
 - `AWS_ACCESS_KEY_ID` - must be set.
 - `AWS_SECRET_ACCESS_KEY` - must be set.
 - `LOG_GROUP_NAME` - Cloudwatch logs group name. Defaults to `logstash`.
-- `LOG_STREAM_NAME` - Cloudwatch logs stream name. Defaults to `kubernetes`.
+- `LOG_STREAM_NAME` - Cloudwatch logs stream name. Defaults to `hostname()`.
 
 
 ## Running
@@ -66,6 +70,7 @@ As usual, configuration is passed through environment variables.
 ```
 $ docker run -ti --rm \
     -v /var/lib/logstash-kubernetes:/var/lib/logstash \
+    -v /var/log/journal:/var/log/journal:ro \
     -v /var/lib/docker/containers:/var/lib/docker/containers \
     -v /var/log/containers:/var/log/containers \
     -e AWS_REGION=us-west-1 \
