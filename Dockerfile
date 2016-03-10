@@ -1,19 +1,20 @@
-FROM fedora:22
+FROM quay.io/ukhomeofficedigital/centos-base:v0.2.0
 
-RUN dnf update -y -q; dnf clean all
-ADD logstash-1.5.repo /etc/yum.repos.d/logstash-1.5.repo
-RUN dnf install -y -q java-1.8.0-openjdk-headless.x86_64 logstash which hostname; dnf clean all
+RUN yum update -y -q; yum clean all
+RUN yum install -y -q java-headless which hostname tar wget; yum clean all
 
-ENV PATH=${PATH}:/opt/logstash/bin
+ENV LS_VERSION 2.2.2
+RUN wget -q https://download.elastic.co/logstash/logstash/logstash-2.2.2.tar.gz -O - | tar -xzf -; \
+  mv logstash-${LS_VERSION} /logstash
 
-RUN /opt/logstash/bin/plugin install logstash-filter-kubernetes
-RUN /opt/logstash/bin/plugin install logstash-filter-json_encode
-RUN /opt/logstash/bin/plugin install logstash-output-cloudwatchlogs
-RUN /opt/logstash/bin/plugin install logstash-input-journald
+RUN /logstash/bin/plugin install logstash-filter-kubernetes
+RUN /logstash/bin/plugin install logstash-input-journald
+RUN /logstash/bin/plugin install --version 2.0.0.pre1 logstash-output-cloudwatchlogs
 
 COPY run.sh /run.sh
-COPY conf.d/ /etc/logstash/conf.d/
+COPY conf.d/ /logstash/conf.d/
 
-VOLUME /var/log/logstash
+WORKDIR /var/lib/logstash
+VOLUME /var/lib/logstash
 
 CMD ["/run.sh"]
