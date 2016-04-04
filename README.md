@@ -2,7 +2,7 @@
 
 Logstash container for pulling docker logs with kubernetes metadata support.
 Additionally logs are pulled from systemd journal too. Events can be pushed to
-Cloudwatch Logs.
+Cloudwatch Logs and or ElasticSearch.
 
 Logstash tails docker logs and extracts `pod`, `container_name`, `namespace`,
 etc. The way this works is very simple. Logstash looks at an event field which
@@ -10,8 +10,8 @@ contains full path to kubelet created symlinks to docker container logs, and
 extracts useful information from a symlink name. No access to Kubernetes API
 is required.
 
-Events are then pushed to Cloudwatch logs. An example event in Cloudwatch Logs
-looks like below:
+Events can then pushed to Cloudwatch logs (disabled by default). An example
+event in Cloudwatch Logs looks like below:
 
 ```json
 {
@@ -51,18 +51,16 @@ access keys via environment variables.
 
 As usual, configuration is passed through environment variables.
 
-### Logstash
-
 - `LS_HEAP_SIZE` - logstash JVM heap size. Defaults to `500m`.
-
-### Cloudwatch Logs
-
-- `OUTPUT_CLOUDWATCH` - whether to enable this output. Defaults to `true`.
+- `OUTPUT_CLOUDWATCH` - whether to enable this output. Defaults to `false`.
 - `AWS_REGION` - defaults to `eu-west-1`.
 - `AWS_ACCESS_KEY_ID` - must be set.
 - `AWS_SECRET_ACCESS_KEY` - must be set.
 - `LOG_GROUP_NAME` - Cloudwatch logs group name. Defaults to `logstash`.
 - `LOG_STREAM_NAME` - Cloudwatch logs stream name. Defaults to `hostname()`.
+- `INPUT_JOURNALD` - Enable logs ingestion from journald. Default: `true`.
+- `OUTPUT_ELASTICSEARCH` - Enable logs output to ElasticSearch. Default `true`.
+- `ELASTICSEARCH_HOST` - ElasticSearch host, can be comma separated. Default: `127.0.0.1:9200`.
 
 
 ## Running
@@ -73,8 +71,6 @@ $ docker run -ti --rm \
     -v /var/log/journal:/var/log/journal:ro \
     -v /var/lib/docker/containers:/var/lib/docker/containers \
     -v /var/log/containers:/var/log/containers \
-    -e AWS_REGION=us-west-1 \
-    -e AWS_ACCESS_KEY_ID=<REPLACE ME> \
-    -e AWS_SECRET_ACCESS_KEY=<REPLACE ME> \
-    quay.io/ukhomeofficedigital/logstash-kubernetes:latest
+    -e ELASTICSEARCH_HOST=my-est-host.local:9200 \
+    quay.io/ukhomeofficedigital/logstash-kubernetes:v0.1.0
 ```
