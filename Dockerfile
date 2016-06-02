@@ -3,8 +3,8 @@ FROM quay.io/ukhomeofficedigital/centos-base:v0.2.0
 RUN yum update -y -q; yum clean all
 RUN yum install -y -q java-headless which hostname tar wget; yum clean all
 
-ENV LS_VERSION 2.2.2
-RUN wget -q https://download.elastic.co/logstash/logstash/logstash-2.2.2.tar.gz -O - | tar -xzf -; \
+ENV LS_VERSION 2.3.2
+RUN wget -q https://download.elastic.co/logstash/logstash/logstash-${LS_VERSION}.tar.gz -O - | tar -xzf -; \
   mv logstash-${LS_VERSION} /logstash
 
 RUN /logstash/bin/plugin install logstash-filter-kubernetes

@@ -61,6 +61,7 @@ As usual, configuration is passed through environment variables.
 - `INPUT_JOURNALD` - Enable logs ingestion from journald. Default: `true`.
 - `OUTPUT_ELASTICSEARCH` - Enable logs output to ElasticSearch. Default `true`.
 - `ELASTICSEARCH_HOST` - ElasticSearch host, can be comma separated. Default: `127.0.0.1:9200`.
+- `ELASTICSEARCH_INDEX_SUFFIX` - ElasticSearch index suffix. Default: `""`.
 
 
 ## Running
