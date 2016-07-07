@@ -73,5 +73,5 @@ $ docker run -ti --rm \
     -v /var/lib/docker/containers:/var/lib/docker/containers:ro \
     -v /var/log/containers:/var/log/containers:ro \
     -e ELASTICSEARCH_HOST=my-est-host.local:9200 \
-    quay.io/ukhomeofficedigital/logstash-kubernetes:v0.1.0
+    quay.io/ukhomeofficedigital/logstash-kubernetes:v0.4.0
 ```
