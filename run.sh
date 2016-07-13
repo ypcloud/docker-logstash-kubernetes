@@ -51,4 +51,4 @@ fi
 
 ulimit -n ${LS_OPEN_FILES} > /dev/null
 
-/logstash/bin/logstash -f /logstash/conf.d
+/logstash/bin/logstash -f /logstash/conf.d ${LOGSTASH_ARGS}
