@@ -1,9 +1,9 @@
-FROM quay.io/ukhomeofficedigital/centos-base:v0.2.0
+FROM fedora:25
 
-RUN yum update -y -q && \
-    yum clean all && \
-    yum install -y -q java-headless which hostname tar wget && \
-    yum clean all
+RUN dnf upgrade -y -q && \
+    dnf clean all && \
+    dnf install -y -q java-headless which hostname tar wget && \
+    dnf clean all
 
 ENV LS_VERSION 2.4.1
 RUN wget -q https://download.elastic.co/logstash/logstash/logstash-${LS_VERSION}.tar.gz -O - | tar -xzf -; \
@@ -20,4 +20,4 @@ COPY conf.d/ /logstash/conf.d/
 WORKDIR /var/lib/logstash
 VOLUME /var/lib/logstash
 
-CMD ["/run.sh"]
+ENTRYPOINT ["/run.sh"]
