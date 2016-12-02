@@ -5,7 +5,7 @@ RUN yum update -y -q && \
     yum install -y -q java-headless which hostname tar wget && \
     yum clean all
 
-ENV LS_VERSION 2.3.3
+ENV LS_VERSION 2.4.1
 RUN wget -q https://download.elastic.co/logstash/logstash/logstash-${LS_VERSION}.tar.gz -O - | tar -xzf -; \
   mv logstash-${LS_VERSION} /logstash
 
