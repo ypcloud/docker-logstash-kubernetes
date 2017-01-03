@@ -17,6 +17,14 @@ RUN /logstash/bin/logstash-plugin install --version 5.4.0 logstash-output-elasti
 COPY run.sh /run.sh
 COPY conf.d/ /logstash/conf.d/
 
+RUN set -ex; \
+# if the "log4j2.properties" file exists (logstash 5.x), let's empty it out 
+# so we get the default: "logging only errors to the console"
+  if [ -f "/logstash/config/log4j2.properties" ]; then \
+    cp "/logstash/config/log4j2.properties" "/logstash/config/log4j2.properties.dist"; \
+    truncate --size=0 "/logstash/config/log4j2.properties"; \
+  fi
+
 WORKDIR /var/lib/logstash
 VOLUME /var/lib/logstash
 
