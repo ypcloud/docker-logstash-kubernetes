@@ -65,10 +65,10 @@ As usual, configuration is passed through environment variables.
 - `ELASTICSEARCH_HOST` - ElasticSearch host, can be comma separated. Default: `127.0.0.1:9200`.
 - `ELASTICSEARCH_INDEX_SUFFIX` - ElasticSearch index suffix. Default: `""`.
 - `LOGSTASH_ARGS` - Sets additional logstash command line arguments.
--  AWS_BUCKET - S3 bucket to output to
--  AWS_SIZE_FILE - Set the size of file in bytes. Default to 2048 .
--  AWS_TIME_FILE - Set the time in minutes to close the current sub_time_section of bucket. Default: 5
--  AWS_CANNED_ACL - The S3 canned ACL to use when putting the file. Defaults to 'private' .
+- `AWS_BUCKET - S3 bucket to output to
+- `AWS_SIZE_FILE - Set the size of file in bytes. Default to 2048 .
+- `AWS_TIME_FILE - Set the time in minutes to close the current sub_time_section of bucket. Default: 5
+- `AWS_CANNED_ACL - The S3 canned ACL to use when putting the file. Defaults to 'private' .
 
 
 ## Running
