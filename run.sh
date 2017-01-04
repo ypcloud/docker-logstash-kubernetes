@@ -14,6 +14,11 @@ export HOME=/var/lib/logstash
 : ${LOG_GROUP_NAME:=logstash}
 : ${LOG_STREAM_NAME:=$(hostname)}
 
+: ${OUTPUT_S3=:false}
+: ${AWS_ACCESS_KEY:=""}
+: ${AWS_SECRET_ACCESS_KEY:=""}
+: ${AWS_BUCKET:=""}
+
 : ${OUTPUT_ELASTICSEARCH:=true}
 : ${ELASTICSEARCH_HOST:=127.0.0.1:9200}
 : ${ELASTICSEARCH_INDEX_SUFFIX:=""}
@@ -21,6 +26,19 @@ export HOME=/var/lib/logstash
 
 if [[ ${INPUT_JOURNALD} != 'true' ]]; then
   rm -f /logstash/conf.d/10_input_journald.conf
+fi
+
+if [[ ${OUTPUT_S3} != 'true' ]]; then
+  rm -rf /logstash/conf.d/20_output_kubernetes_s3.conf
+else
+  sed -e "s/%AWS_ACCESS_KEY_ID%/${AWS_ACCESS_KEY_ID}/" \
+      -e "s/%AWS_SECRET_ACCESS_KEY%/${AWS_SECRET_ACCESS_KEY}/" \
+      -e "s/%AWS_REGION%/${AWS_REGION}/" \
+      -e "s/%AWS_BUCKET%/${AWS_BUCKET}/" \
+      -e "s/%AWS_SIZE_FILE%/${AWS_SIZE_FILE}/" \
+      -e "s/%AWS_TIME_FILE%/${AWS_TIME_FILE}/" \
+      -e "s/%AWS_CANNED_ACL%/${AWS_CANNED_ACL}/" \
+      -i /logstash/conf.d/20_output_kubernetes_s3.conf
 fi
 
 

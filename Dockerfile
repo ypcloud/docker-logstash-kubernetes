@@ -1,5 +1,14 @@
 FROM fedora:25
 
+# S3 variables
+ENV AWS_ACCESS_KEY_ID SOMETHING
+ENV AWS_SECRET_ACCESS_KEY SOMETHINGELSE
+ENV AWS_REGION eu-west-1
+ENV AWS_BUCKET commons-dev-logs
+ENV AWS_SIZE_FILE 2048
+ENV AWS_TIME_FILE 5
+ENV AWS_CANNED_ACL private
+
 RUN dnf upgrade -y -q && \
     dnf clean all && \
     dnf install -y -q java-headless which hostname tar wget && \
