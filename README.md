@@ -4,6 +4,8 @@ Logstash container for pulling docker logs with kubernetes metadata support.
 Additionally logs are pulled from systemd journal too. Events can be pushed to
 Cloudwatch Logs and or ElasticSearch.
 
+This version adds the AWS S3 Elastic plug-in to allow logging to long term storage. 
+
 Logstash tails docker logs and extracts `pod`, `container_name`, `namespace`,
 etc. The way this works is very simple. Logstash looks at an event field which
 contains full path to kubelet created symlinks to docker container logs, and
