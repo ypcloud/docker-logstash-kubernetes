@@ -2,6 +2,7 @@
 
 export HOME=/var/lib/logstash
 
+: ${LS_LOG_LEVEL:=error}
 : ${LS_HEAP_SIZE:=500m}
 : ${LS_JAVA_OPTS:=-Djava.io.tmpdir=${HOME}}
 : ${LS_LOG_DIR:=/var/lib/logstash}
@@ -51,4 +52,4 @@ fi
 
 ulimit -n ${LS_OPEN_FILES} > /dev/null
 
-exec /logstash/bin/logstash --log.format json -f /logstash/conf.d ${LOGSTASH_ARGS}
+exec /logstash/bin/logstash --log.format json --log.level ${LS_LOG_LEVEL} -f /logstash/conf.d ${LOGSTASH_ARGS}
