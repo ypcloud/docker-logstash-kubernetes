@@ -52,4 +52,4 @@ fi
 
 ulimit -n ${LS_OPEN_FILES} > /dev/null
 
-exec /logstash/bin/logstash --log.format json --log.level ${LS_LOG_LEVEL} -f /logstash/conf.d ${LOGSTASH_ARGS}
+exec /logstash/bin/logstash --log.format json --log.level ${LS_LOG_LEVEL} --config.reload.automatic -f /logstash/conf.d ${LOGSTASH_ARGS}
