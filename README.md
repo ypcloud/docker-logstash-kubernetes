@@ -31,8 +31,12 @@ journal logs from the beginning after a restart, make sure you mount
 As usual, configuration is passed through environment variables.
 
 - `LS_HEAP_SIZE` - logstash JVM heap size. Defaults to `500m`.
+- `LS_LOG_LEVEL` - Logstash log level. Default: `error`.
+- `LS_PIPELINE_BATCH_SIZE` - Size of batches the pipeline is to work in. Default: `125`
 - `INPUT_JOURNALD` - Enable logs ingestion from journald. Default: `true`.
 - `OUTPUT_ELASTICSEARCH` - Enable logs output to ElasticSearch. Default `true`.
+- `ELASTICSEARCH_FLUSH_SIZE` - Bulk index flush size. Default: `500`
+- `ELASTICSEARCH_IDLE_FLUSH_TIME` - Bulk index idle flush time in seconds. Default: `1`
 - `ELASTICSEARCH_HOST` - ElasticSearch host, can be comma separated. Default: `127.0.0.1:9200`.
 - `ELASTICSEARCH_INDEX_SUFFIX` - ElasticSearch index suffix. Default: `""`.
 - `LOGSTASH_ARGS` - Sets additional logstash command line arguments.
