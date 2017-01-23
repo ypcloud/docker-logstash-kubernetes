@@ -34,6 +34,7 @@ As usual, configuration is passed through environment variables.
 - `LS_LOG_LEVEL` - Logstash log level. Default: `error`.
 - `LS_PIPELINE_BATCH_SIZE` - Size of batches the pipeline is to work in. Default: `125`
 - `INPUT_JOURNALD` - Enable logs ingestion from journald. Default: `true`.
+- `INPUT_KUBERNETES_AUDIT` - Enable kubernetes audit logs ingestion. Default: `true`.
 - `OUTPUT_ELASTICSEARCH` - Enable logs output to ElasticSearch. Default `true`.
 - `ELASTICSEARCH_FLUSH_SIZE` - Bulk index flush size. Default: `500`
 - `ELASTICSEARCH_IDLE_FLUSH_TIME` - Bulk index idle flush time in seconds. Default: `1`

@@ -10,6 +10,7 @@ export HOME=/var/lib/logstash
 : ${LS_PIPELINE_BATCH_SIZE:=125}
 
 : ${INPUT_JOURNALD:=true}
+: ${INPUT_KUBERNETES_AUDIT:=true}
 
 : ${OUTPUT_ELASTICSEARCH:=true}
 : ${ELASTICSEARCH_HOST:=127.0.0.1:9200}
@@ -22,16 +23,22 @@ if [[ ${INPUT_JOURNALD} != 'true' ]]; then
   rm -f /logstash/conf.d/10_input_journald.conf
 fi
 
+if [[ ${INPUT_KUBERNETES_AUDIT} != 'true' ]]; then
+  rm -f /logstash/conf.d/10_input_kubernetes_audit.conf
+fi
+
 
 if [[ ${OUTPUT_ELASTICSEARCH} != 'true' ]]; then
   rm -f /logstash/conf.d/20_output_journald_elasticsearch.conf
   rm -f /logstash/conf.d/20_output_kubernetes_elasticsearch.conf
+  rm -f /logstash/conf.d/20_output_kubernetes_audit_elasticsearch.conf
 else
   sed -e "s/%ELASTICSEARCH_HOST%/${ELASTICSEARCH_HOST}/" \
       -e "s/%ELASTICSEARCH_INDEX_SUFFIX%/${ELASTICSEARCH_INDEX_SUFFIX}/" \
       -e "s/%ELASTICSEARCH_FLUSH_SIZE%/${ELASTICSEARCH_FLUSH_SIZE}/" \
       -e "s/%ELASTICSEARCH_IDLE_FLUSH_TIME%/${ELASTICSEARCH_IDLE_FLUSH_TIME}/" \
       -i /logstash/conf.d/20_output_kubernetes_elasticsearch.conf \
+      -i /logstash/conf.d/20_output_kubernetes_audit_elasticsearch.conf \
       -i /logstash/conf.d/20_output_journald_elasticsearch.conf
 fi
 
