@@ -49,5 +49,5 @@ exec /logstash/bin/logstash --log.format json \
   --log.level ${LS_LOG_LEVEL} \
   --pipeline.batch.size ${LS_PIPELINE_BATCH_SIZE} \
   --config.reload.automatic \
-  -f /logstash/conf.d \
+  -f "/logstash/conf.d/**/*.conf" \
   ${LOGSTASH_ARGS}
