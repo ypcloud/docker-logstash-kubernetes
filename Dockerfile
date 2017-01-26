@@ -9,9 +9,9 @@ ENV LS_VERSION 5.1.2
 RUN wget -q https://artifacts.elastic.co/downloads/logstash/logstash-${LS_VERSION}.tar.gz -O - | tar -xzf -; \
   mv logstash-${LS_VERSION} /logstash
 
-RUN /logstash/bin/logstash-plugin install --version 6.2.1 logstash-output-elasticsearch && \
-    /logstash/bin/logstash-plugin install --version 0.3.1 logstash-filter-kubernetes && \
-    /logstash/bin/logstash-plugin install --version 2.0.0 logstash-input-journald
+RUN JARS_SKIP=true /logstash/bin/logstash-plugin install --version 6.2.4 logstash-output-elasticsearch && \
+    JARS_SKIP=true /logstash/bin/logstash-plugin install --version 0.3.1 logstash-filter-kubernetes && \
+    JARS_SKIP=true /logstash/bin/logstash-plugin install --version 2.0.0 logstash-input-journald
 
 COPY run.sh /run.sh
 COPY conf.d/ /logstash/conf.d/
