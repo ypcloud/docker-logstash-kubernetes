@@ -9,7 +9,6 @@ export HOME=/var/lib/logstash
 : ${LS_OPEN_FILES:=8192}
 : ${LS_PIPELINE_BATCH_SIZE:=125}
 
-: ${INPUT_JOURNALD:=true}
 : ${INPUT_KUBERNETES_AUDIT:=true}
 
 : ${OUTPUT_ELASTICSEARCH:=true}
@@ -18,10 +17,6 @@ export HOME=/var/lib/logstash
 : ${ELASTICSEARCH_FLUSH_SIZE:=500}
 : ${ELASTICSEARCH_IDLE_FLUSH_TIME:=1}
 
-
-if [[ ${INPUT_JOURNALD} != 'true' ]]; then
-  rm -f /logstash/conf.d/10_input_journald.conf
-fi
 
 if [[ ${INPUT_KUBERNETES_AUDIT} != 'true' ]]; then
   rm -f /logstash/conf.d/10_input_kubernetes_audit.conf
@@ -38,8 +33,7 @@ else
       -e "s/%ELASTICSEARCH_FLUSH_SIZE%/${ELASTICSEARCH_FLUSH_SIZE}/" \
       -e "s/%ELASTICSEARCH_IDLE_FLUSH_TIME%/${ELASTICSEARCH_IDLE_FLUSH_TIME}/" \
       -i /logstash/conf.d/20_output_kubernetes_elasticsearch.conf \
-      -i /logstash/conf.d/20_output_kubernetes_audit_elasticsearch.conf \
-      -i /logstash/conf.d/20_output_journald_elasticsearch.conf
+      -i /logstash/conf.d/20_output_kubernetes_audit_elasticsearch.conf
 fi
 
 
